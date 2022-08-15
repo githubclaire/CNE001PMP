@@ -145,7 +145,23 @@ void pmu_init(void)
 	p_dvfs_reg_ctrl->S3D1_DVFS_CFG.reg.min_dvfs_idx = 0;
 	p_dvfs_reg_ctrl->VPP_DVFS_CFG.reg.min_dvfs_idx = 0;
 
-	
+	//enable ts register
+	writel(0x00008020, 0x63007);
+	writel(0x3c000000, 0x63008);
+	writel(0x00e08001, 0x63005);
+	writel(0x00000200, 0x63006);
+	writel(0x0fffeda0, 0x63000);
+	writel(0x0000cdb6, 0x63001);
+	writel(0x0ffd49c2, 0x63002);
+	writel(0x000569c0, 0x63003);
+	writel(0x0ffb557d, 0x63004);
+	writel(0x0000b880, 0x6300a);
+	writel(0x0280000a, 0x6300b);
+	writel(0x0000003c, 0x6300c);
+	writel(0x00000050, 0x6300d);
+	writel(0x00000064, 0x6300e);
+    writel(0x00000000, 0x6300f);
+	writel(0x0008809f, 0x63009);
 	
 }
 
