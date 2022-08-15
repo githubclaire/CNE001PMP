@@ -1,5 +1,6 @@
-PMP_VERSION ?= "_v_1_0_21"
+PMP_VERSION ?= "_v2"
 TIME := $(shell env LANG=en_US date +"%F_%H-%M-%S")
+GFX="gfx_"
 
 # Set to 0 to keep the bin size as it is
 #make BIN_SIZE_BYTE=16*1024
@@ -27,8 +28,8 @@ EXECUTABLE := pmp
 
 # Variables in makefile are always expanded.
 ifneq ($(PMP_VERSION),)
-BINARY := $(EXECUTABLE)$(PMP_VERSION).bin
-BINARY_W_TIME := $(EXECUTABLE)$(PMP_VERSION)_$(TIME).bin
+BINARY := $(GFX)$(EXECUTABLE)$(PMP_VERSION).bin
+BINARY_W_TIME := $(GFX)$(EXECUTABLE)$(PMP_VERSION)_$(TIME).bin
 else
 BINARY := $(EXECUTABLE).bin
 BINARY_W_TIME := $(EXECUTABLE)_$(TIME).bin

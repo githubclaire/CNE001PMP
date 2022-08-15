@@ -344,17 +344,19 @@ void pmu_int_handler(void) {
 	unsigned char idx=0;
 
 	if(p_int->PMP_INTERRUPT_STATUS.reg.pcu_grnt_wen)
+	//if(p_int->PMP_PCU_GRNT.reg.PCU_GRNT)
 	{
 		//clear status
 		p_int->PMP_IRQ_CLR_CTRL.reg.pcu_grnt_wen=1;
 		//update task status
-		task_status.boost = p_int->PMP_PCU_GRNT.reg.PCU_GRNT;
+		//task_status.boost = p_int->PMP_PCU_GRNT.reg.PCU_GRNT;
 
 	}
 	else if(p_int->PMP_INTERRUPT_STATUS.reg.pcu_max_dvfs_clamp_wen)
 	{
 		//clear status
 		p_int->PMP_IRQ_CLR_CTRL.reg.pcu_max_dvfs_clamp_wen=1;
+		task_status.boost = p_int->PMP_PCU_GRNT.reg.PCU_GRNT;
 
 		//used max power
 		all_power_budget = c3d_index_power_table[p_dvfs_reg_ctrl->C3D_DVFS_CFG.reg.max_dvfs_idx]+\
@@ -571,7 +573,7 @@ void pcu_boost_reduce_test(void)
 	}
 	else if(pcu_boost_reduce_index<32)
 	{
-		power_budget_reduce(c3d_index_power_table[32-pcu_boost_reduce_index]);
+		power_budget_reduce(c3d_index_power_table[32-pcu_boost_reduce_index-1]);
 		pcu_boost_reduce_index++;
 	}
 	else
