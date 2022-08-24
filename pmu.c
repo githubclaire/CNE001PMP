@@ -126,6 +126,8 @@ void pmu_init(void)
 	p_int->PMP_IRQ_EN_CTRL.reg.s3d1_avs_cmd_pmp_int = 0;
 	p_int->PMP_IRQ_EN_CTRL.reg.s3d0_avs_cmd_pmp_int = 0;
 	p_int->PMP_IRQ_EN_CTRL.reg.c3d_avs_cmd_pmp_int = 0;
+    //enable irq enable
+	p_int->CPU_IRQ_EN_CTRL.uint = 0x80000000;
 	// disable fiq
 	p_int->PMP_IRQ_EN_CTRL.reg.c3d_avs_cmd_pmp_int = 0;
 	p_int->PMP_IRQ_EN_CTRL.reg.GPU_TEMP_IRQ = 0;
@@ -144,6 +146,8 @@ void pmu_init(void)
 	p_dvfs_reg_ctrl->S3D0_DVFS_CFG.reg.min_dvfs_idx = 0;
 	p_dvfs_reg_ctrl->S3D1_DVFS_CFG.reg.min_dvfs_idx = 0;
 	p_dvfs_reg_ctrl->VPP_DVFS_CFG.reg.min_dvfs_idx = 0;
+
+
 
 	//enable ts register
 	writel(0x00008020, 0x60000+(0x3007<<2));
