@@ -480,7 +480,7 @@ typedef union{
     struct
     {
 		unsigned int s3d1_cur_volt_idx        :6;  //R [5:0]
-		unsigned int Reserved2                :3;  //R [7:5]
+		unsigned int Reserved2                :2;  //R [7:6]
 		unsigned int cur_dvfs_idx             :4;  //R [11:8]
 		unsigned int volt_ctrl_value          :8;  //R [19:12]
 		unsigned int volt_ctrl_slew           :2;  //R [21:20]
