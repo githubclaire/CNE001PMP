@@ -8,6 +8,8 @@
 #include "printf.h"
 #include "timer.h"
 
+
+
 static PUART_REG pUart_Reg = (PUART_REG)BA_UART0;
 
 unsigned char debug_flag = 1;

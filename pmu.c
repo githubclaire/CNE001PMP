@@ -4,6 +4,7 @@
 #include "string.h"
 #include "timer.h"
 #include "io.h"
+#include "sram.h"
 
 
 static DVFS_TABLE c3d_dvfs_table[]	=	{C3D_DVFS_TABLE};
@@ -313,8 +314,8 @@ unsigned char power_to_index(unsigned int power)
 	for(i=0;i<16;i++)
 	{
 		power_buf = c3d_index_power_table[i];
-					//s3d0_index_power_table[i]+\
-					//s3d1_index_power_table[i]+\
+					//s3d0_index_power_table[i]+
+					//s3d1_index_power_table[i]+
 					//vpp_index_power_table[i];	
 		if(power_buf>power)
 		{
@@ -327,7 +328,9 @@ unsigned char power_to_index(unsigned int power)
 
 void power_budget_boost(unsigned int power)
 {
-  
+	PMP_print_f("gfx request boost power budget is ");
+	PMP_print_f(tohex_str(power));
+	PMP_print_f("\n");
 	//1. update GPU_PERF_REQ
 	if(power > p_int->PCU_MAX_DVFS_CLAMP_VALUE.reg.MAX_DVFS_CLAMP)
 	{
@@ -346,6 +349,10 @@ void power_budget_boost(unsigned int power)
 }
 void power_budget_reduce(unsigned int power)
 {
+	PMP_print_f("gfx request reduce power budget is ");
+	PMP_print_f(tohex_str(power));
+	PMP_print_f("\n");
+
 	//1. update GPU_PERF_REQ
 	if(power < p_int->PCU_MAX_DVFS_CLAMP_VALUE.reg.MAX_DVFS_CLAMP)
 	{
@@ -377,6 +384,10 @@ void pmu_int_handler(void) {
 		//clear status
 		p_int->PMP_IRQ_CLR_CTRL.reg.pcu_max_dvfs_clamp_wen=1;
 		task_status.boost = p_int->PMP_PCU_GRNT.reg.PCU_GRNT;
+
+		PMP_print_f("pcu clamp power budget is ");
+		PMP_print_f(tohex_str(p_int->PCU_MAX_DVFS_CLAMP_VALUE.reg.MAX_DVFS_CLAMP));
+		PMP_print_f("\n");
 
 		//used max power
 		all_power_budget = c3d_index_power_table[p_dvfs_reg_ctrl->C3D_DVFS_CFG.reg.max_dvfs_idx]+\
@@ -575,7 +586,6 @@ void pcu_boost_reduce_test(void)
 		if(task_status.boost)
 		{
 				power_budget_boost(c3d_index_power_table[pcu_boost_reduce_index]);
-				//power_budget_boost(c3d_index_power_table[pcu_boost_reduce_index]);
 				pcu_boost_reduce_index++;
 		}
 		else
@@ -600,42 +610,6 @@ void pcu_boost_reduce_test(void)
 	{
 		pcu_boost_reduce_index=0;
 		task_status.boost=1;
-	}
-
-	
-/*
-    if(pcu_boost_reduce_index<16){
-	  if(pcu_boost_reduce_index>=0){
-	    if(task_status.boost==1)
-		{
-			power_budget_boost(c3d_index_power_table[pcu_boost_reduce_index]);
-			//power=c3d_index_power_table[pcu_boost_reduce_index];
-			//printf("pcu_boost_reduce_index is %d\n",pcu_boost_reduce_index);
-			pcu_boost_reduce_index++;
-			
-			//printf("power is %x\n",power);
-			
-		}
-	    else{
-			if(pcu_boost_reduce_index>0){
-		    power_budget_reduce(c3d_index_power_table[pcu_boost_reduce_index]);
-			//power=c3d_index_power_table[pcu_boost_reduce_index];
-			//printf("pcu_boost_reduce_index is %d\n",pcu_boost_reduce_index);
-			pcu_boost_reduce_index--;
-			//printf("power is %x\n",power);
-			}
-			else{
-				task_status.boost=1;
-			}
-	    } 
-	 }
-	}
-	else{
-        pcu_boost_reduce_index=15;
-		task_status.boost=0;    
-	}
-
-*/	  
-     
+	}	     
 
 }

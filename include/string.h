@@ -3,6 +3,7 @@
 #ifndef NULL
 #define NULL	0
 #endif
+
 void *memcpy(void *dest, const void *src, unsigned int count);
 void *memcpy32bit(void *dest, const void *src, unsigned int count);
 void *memset(void *s, int c, unsigned int count);

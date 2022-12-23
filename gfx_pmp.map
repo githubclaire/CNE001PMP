@@ -1,0 +1,255 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+                0x00000000                . = 0x0
+                0x00000000                . = ALIGN (0x4)
+
+.text           0x00070000     0x2590
+ *(.start)
+ .start         0x00070000       0x40 start.o
+                0x00070000                _start
+                0x00070024                pmp_version_str
+                0x00070028                build_time
+ *(.text)
+ .text          0x00070040       0xe8 start.o
+                0x000700cc                wfi
+                0x00070104                restart
+ .text          0x00070128        0x4 main.o
+                0x00070128                patches
+ .text          0x0007012c      0x1e4 serial.o
+                0x0007012c                serial_putc
+                0x00070148                serial_puts
+                0x0007018c                serial_getc
+                0x000701a8                serial_getc_timeout
+                0x000701d4                serial_getc_n
+                0x000701f0                serial_setbrg
+                0x000702d8                serial_init
+                0x000702ec                uart_intr_handler
+ .text          0x00070310      0x120 timer.o
+                0x00070310                init_pmp_timer
+                0x0007035c                get_pmp_timecount
+                0x00070370                pmp_timer_change_tcr
+                0x00070384                clear_pmp_timerint
+                0x0007039c                stop_pmp_timer
+                0x000703b4                start_pmp_timer
+                0x000703cc                pmp_timer_handler
+                0x000703ec                udelay
+                0x0007040c                mdelay
+ .text          0x00070430      0x6e0 string.o
+                0x00070610                memcpy
+                0x00070630                memcpy32bit
+                0x00070650                memset
+                0x00070668                memmove
+                0x000706d0                strncmp
+                0x00070724                strncpy
+                0x0007074c                strcmp
+                0x00070780                strchr
+                0x000707b4                strlen
+                0x000707d4                strcpy
+                0x000707ec                atoi
+                0x00070820                atoh
+                0x000708c8                reverse
+                0x00070910                my_itoa
+                0x00070a7c                tohex_str
+ .text          0x00070b10       0xe4 interrupt.o
+                0x00070b10                set_vic_enable
+                0x00070b24                init_vic
+                0x00070b58                feed_wdt
+                0x00070b70                init_wdt
+                0x00070b90                wdt_intr_handler
+                0x00070bc0                main_irq_handler
+ .text          0x00070bf4      0xb94 pmu.o
+                0x00070bf4                dvfs_table_init
+                0x00070c7c                pmu_init
+                0x00070e98                c3d_dvfs_reg
+                0x00070f3c                s3d0_dvfs_reg
+                0x00070fe4                s3d1_dvfs_reg
+                0x00071088                vpp_dvfs_reg
+                0x00071130                power_to_index
+                0x00071168                power_budget_boost
+                0x000711d8                power_budget_reduce
+                0x00071230                pmu_int_handler
+                0x000716c0                pmu_fiq_handler
+                0x000716c4                c3d_reg_mode_test
+                0x00071700                pcu_boost_reduce_test
+ .text          0x00071788       0x34 sram.o
+                0x00071788                PMP_print_f
+ *fill*         0x000717bc        0x4 00
+ .text          0x000717c0      0xdd0 libgcc/libgcc.o
+                0x000717c0                __aeabi_llsr
+                0x000717c0                __lshrdi3
+                0x000717dc                __udivsi3
+                0x000717dc                __aeabi_uidiv
+                0x00071874                __aeabi_uidivmod
+                0x0007188c                __aeabi_idivmod
+                0x000718c0                __aeabi_idiv
+                0x000718c0                __divsi3
+                0x00071a00                __div0
+                0x00071a04                __div64_32
+                0x00072000                strnlen
+                0x00072028                vsnprintf
+                0x0007251c                vscnprintf
+                0x00072540                printf
+
+.glue_7         0x00072590        0x0
+ .glue_7        0x00000000        0x0 linker stubs
+
+.glue_7t        0x00072590        0x0
+ .glue_7t       0x00000000        0x0 linker stubs
+
+.vfp11_veneer   0x00072590        0x0
+ .vfp11_veneer  0x00000000        0x0 linker stubs
+
+.v4_bx          0x00072590        0x0
+ .v4_bx         0x00000000        0x0 linker stubs
+
+.iplt           0x00072590        0x0
+ .iplt          0x00000000        0x0 start.o
+
+.text.startup   0x00072590       0x28
+ .text.startup  0x00072590       0x28 main.o
+                0x00072590                main
+                0x000725b8                . = ALIGN (0x4)
+
+.rodata         0x000725b8      0x29c
+ *(SORT(.rodata*))
+ .rodata        0x000725b8      0x100 pmu.o
+ .rodata        0x000726b8       0x11 interrupt.o
+ .rodata        0x000726c9      0x110 libgcc/libgcc.o
+                0x000726c9                _ctype
+ .rodata.str1.1
+                0x000727d9       0x10 interrupt.o
+ .rodata.str1.1
+                0x000727e9       0x64 pmu.o
+ .rodata.str1.1
+                0x0007284d        0x7 libgcc/libgcc.o
+
+.eh_frame_hdr   0x00072854        0x0
+ .eh_frame_hdr  0x00000000        0x0 libgcc/libgcc.o
+
+.rel.dyn        0x00072854        0x0
+ .rel.iplt      0x00000000        0x0 start.o
+                0x00072854                . = ALIGN (0x4)
+
+.data           0x00072854      0x47c
+ *(.data)
+ .data          0x00072854        0x0 start.o
+ .data          0x00072854        0x4 main.o
+                0x00072854                pmp_clock
+ .data          0x00072858        0x1 serial.o
+                0x00072858                debug_flag
+ *fill*         0x00072859        0x3 00
+ .data          0x0007285c        0x4 timer.o
+                0x0007285c                pmptimer
+ .data          0x00072860        0x0 string.o
+ .data          0x00072860        0x0 interrupt.o
+ .data          0x00072860      0x470 pmu.o
+                0x00072ca0                p_dvfs_en_and_avs_en
+                0x00072ca4                p_int
+                0x00072ca8                p_dvfs_reg_ctrl
+                0x00072cac                p_pmu
+                0x00072cb0                all_power_budget
+                0x00072cb4                P_DFX_PWR
+                0x00072cb8                p_reset_ctrl_and_power_on
+                0x00072cbc                p_dvfs_and_voltage_table
+                0x00072cc0                p_dvfs_and_avs_cmd_fifo
+                0x00072cc4                p_dvfs_auto_external_trigger
+                0x00072cc8                p_dvfs_performance_up_down_table
+                0x00072ccc                p_clk_module
+ .data          0x00072cd0        0x0 sram.o
+ .data          0x00072cd0        0x0 libgcc/libgcc.o
+
+.igot.plt       0x00072cd0        0x0
+ .igot.plt      0x00000000        0x0 start.o
+                0x00072cd0                . = ALIGN (0x4)
+                0x00072cd0                __pmp_cmd_start = .
+
+.pmp_cmd
+ *(.pmp_cmd)
+                0x00072cd0                __pmp_cmd_end = .
+                0x00072cd0                . = ALIGN (0x4)
+                0x00072cd0                __bss_start = .
+
+.bss            0x00072cd0       0x80
+ *(.bss .bss.*)
+ .bss           0x00072cd0        0x0 start.o
+ .bss           0x00072cd0        0x0 main.o
+ .bss           0x00072cd0        0x0 serial.o
+ .bss           0x00072cd0        0x4 timer.o
+ .bss           0x00072cd4       0x6e string.o
+ .bss           0x00072d42        0x0 interrupt.o
+ *fill*         0x00072d42        0x2 00
+ .bss           0x00072d44        0xc pmu.o
+                0x00072d44                task_status
+                0x00072d4c                pmp_int_status
+ .bss           0x00072d50        0x0 sram.o
+ .bss           0x00072d50        0x0 libgcc/libgcc.o
+                0x00072d50                . = ALIGN (0x4)
+                0x00072d50                __bss_end = .
+LOAD start.o
+LOAD main.o
+LOAD serial.o
+LOAD timer.o
+LOAD string.o
+LOAD interrupt.o
+LOAD pmu.o
+LOAD sram.o
+LOAD libgcc/libgcc.o
+Address of section .text set to 0x70000
+OUTPUT(gfx_pmp elf32-littlearm)
+
+.ARM.attributes
+                0x00000000       0x28
+ .ARM.attributes
+                0x00000000       0x1c start.o
+ .ARM.attributes
+                0x0000001c       0x32 main.o
+ .ARM.attributes
+                0x0000004e       0x32 serial.o
+ .ARM.attributes
+                0x00000080       0x32 timer.o
+ .ARM.attributes
+                0x000000b2       0x32 string.o
+ .ARM.attributes
+                0x000000e4       0x32 interrupt.o
+ .ARM.attributes
+                0x00000116       0x32 pmu.o
+ .ARM.attributes
+                0x00000148       0x32 sram.o
+ .ARM.attributes
+                0x0000017a       0x28 libgcc/libgcc.o
+
+.comment        0x00000000       0x30
+ .comment       0x00000000       0x30 main.o
+                                 0x31 (size before relaxing)
+ .comment       0x00000000       0x31 serial.o
+ .comment       0x00000000       0x31 timer.o
+ .comment       0x00000000       0x31 string.o
+ .comment       0x00000000       0x31 interrupt.o
+ .comment       0x00000000       0x31 pmu.o
+ .comment       0x00000000       0x31 sram.o
+ .comment       0x00000000       0xc4 libgcc/libgcc.o
+
+.note.GNU-stack
+                0x00000000        0x0
+ .note.GNU-stack
+                0x00000000        0x0 main.o
+ .note.GNU-stack
+                0x00000000        0x0 serial.o
+ .note.GNU-stack
+                0x00000000        0x0 timer.o
+ .note.GNU-stack
+                0x00000000        0x0 string.o
+ .note.GNU-stack
+                0x00000000        0x0 interrupt.o
+ .note.GNU-stack
+                0x00000000        0x0 pmu.o
+ .note.GNU-stack
+                0x00000000        0x0 sram.o
+ .note.GNU-stack
+                0x00000000        0x0 libgcc/libgcc.o
