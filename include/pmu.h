@@ -84,6 +84,7 @@ typedef struct{
 
 void dvfs_table_init(void);
 void pmu_init(void);
+void ts_init(void);
 void pmu_int_handler(void);
 void pmu_fiq_handler(void);
 

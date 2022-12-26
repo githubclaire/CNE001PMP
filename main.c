@@ -37,6 +37,7 @@ void main(void)
 #endif	
 	init_vic();
 	pmu_init();	
+	ts_init();
 		
 	init_pmp_timer(TIM_PERIOD);  //interrupt period ms
 

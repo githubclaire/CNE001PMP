@@ -85,7 +85,6 @@ void dvfs_table_init(void)
 }
 void pmu_init(void)
 {
-	
 	dvfs_table_init();
 	//enable dvfs
 	p_dvfs_en_and_avs_en->C3D_DVFS_EN.reg.c3d_dvfs_en=1;
@@ -96,27 +95,6 @@ void pmu_init(void)
 	//enable all irq
 	p_int->PMP_IRQ_EN_CTRL.uint = 0x1fffffff;
 	p_int->PMU_PCU_ASYNC_DELAY_CNT.uint = 0x1f;
-   //test:
-   /*
-    p_int->CPU_IRQ_EN_CTRL.uint=0x1;
-	p_int->PCU_IRQ_EN_CTRL.uint=0x2;
-	p_int->PMP_IRQ_MASK_CTRL.uint=0x3;
-	p_int->CPU_IRQ_MASK_CTRL.uint=0x4;
-	p_int->PCU_IRQ_MASK_CTRL.uint=0x5;
-	p_int->PMP_IRQ_CLR_CTRL.uint=0x6;
-	p_int->CPU_IRQ_CLR_CTRL.uint=0x7;
-	p_int->PCU_IRQ_CLR_CTRL.uint=0x8;
-	p_int->PMP_INTERRUPT_STATUS.uint=0x9;
-	p_int->CPU_INTERRUPT_STATUS.uint=0xa;
-	p_int->PCU_INTERRUPT_STATUS.uint=0xb;
-	p_int->PCU_IRQ_PREF_BOOST.uint=0xc;
-	p_int->PCU_IRQ_PREF_REDUCE.uint=0xd;
-	p_int->PMP_PCU_GRNT.uint=0xe;
-	p_int->PMP_GPU_PERF_REQ.uint=0xf;
-	p_int->CSP_PMU_TS_STATUS.uint=0x10;
-	p_int->PCU_MAX_DVFS_CLAMP_VALUE.uint=0x11;
-	p_int->PMU_CSP_ASYNC_DELAY_CNT.uint=0x12;
-*/
 
 	//disable sub irq
 	p_int->PMP_IRQ_EN_CTRL.reg.vpp_dvfs_cmd_pmp_int = 0;
@@ -146,28 +124,28 @@ void pmu_init(void)
 	p_dvfs_reg_ctrl->C3D_DVFS_CFG.reg.min_dvfs_idx = 0;
 	p_dvfs_reg_ctrl->S3D0_DVFS_CFG.reg.min_dvfs_idx = 0;
 	p_dvfs_reg_ctrl->S3D1_DVFS_CFG.reg.min_dvfs_idx = 0;
-	p_dvfs_reg_ctrl->VPP_DVFS_CFG.reg.min_dvfs_idx = 0;
+	p_dvfs_reg_ctrl->VPP_DVFS_CFG.reg.min_dvfs_idx = 0;	
+}
 
-
-
-	//enable ts register
-	writel(0x00008020, 0x60000+(0x3007<<2));
-	writel(0x3c000000, 0x60000+(0x3008<<2));
-	writel(0x00e08001, 0x60000+(0x3005<<2));
-	writel(0x00000200, 0x60000+(0x3006<<2));
-	writel(0x0fffeda0, 0x60000+(0x3000<<2));
-	writel(0x0000cdb6, 0x60000+(0x3001<<2));
-	writel(0x0ffd49c2, 0x60000+(0x3002<<2));
-	writel(0x000569c0, 0x60000+(0x3003<<2));
-	writel(0x0ffb557d, 0x60000+(0x3004<<2));
-	writel(0x0000b880, 0x60000+(0x300a<<2));
-	writel(0x0280000a, 0x60000+(0x300b<<2));
-	writel(0x0000003c, 0x60000+(0x300c<<2));
-	writel(0x00000050, 0x60000+(0x300d<<2));
-	writel(0x00000064, 0x60000+(0x300e<<2));
-    writel(0x00000000, 0x60000+(0x300f<<2));
-	writel(0x0008809f, 0x60000+(0x3009<<2));
-	
+void ts_init(void)
+{
+	//init thermal sensor
+	writel(0x00008020, 0x6c01c);
+	writel(0x3c000000, 0x6c020);
+	writel(0x00e08001, 0x6c014);
+	writel(0x00000200, 0x6c018);
+	writel(0x0fffeda0, 0x6c000);
+	writel(0x0000cdb6, 0x6c004);
+	writel(0x0ffd49c2, 0x6c008);
+	writel(0x000569c0, 0x6c00c);
+	writel(0x0ffb557d, 0x6c010);
+	writel(0x0000b880, 0x6c028);
+	writel(0x00a0000a, 0x6c02c);
+	writel(0x0000000a, 0x6c030);
+	writel(0x0000000a, 0x6c034);
+	writel(0x0000000a, 0x6c038);
+    writel(0x00000004, 0x6c03c);
+	writel(0x0008809f, 0x6c024);
 }
 
 int c3d_dvfs_reg(unsigned char dvfs_idx)
